@@ -157,7 +157,7 @@ content.innerHTML = `
                                 class="fas fa-download fa-sm text-white-50"></i>Deconnexion</a>
                     </div>
                     <!-- Content Row -->
-                    <div class="row vh-50 d-flex justify-content-beetwin">
+                    <div class="row vh-50 ">
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
@@ -176,33 +176,28 @@ content.innerHTML = `
                         </div>
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="row no-gutters align-items-center h-100"> <!-- Ajoutez la classe h-100 ici -->
+                            <div class="card border-left-primary shadow h-100 py-2 d-flex justify-content-center">
+                                <div class="row no-gutters d-flex justify-content-center">
                                     <h1 class="fs-1">${nbrXp} kb</h1>
                                 </div>
                             </div>
                         </div>
                         <!-- Earnings (Monthly) Card Example -->
-                        
-
-                    <!-- Content Row -->
                     <div class="col-xl-12 h-300 row">
-                        <!-- Area Chart -->
                         <div class="col-xl-7 h-100 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Nombre de xp par projet</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme en bar, nombre de xp par projet</h6>
                                 </div>
                                 <svg class="bar-chart" width="800" height="600"></svg>
                             </div>
                         </div>
-                        <!-- Pie Chart -->
                         <div class="col-xl-5 col-lg-5">
                             <div class="card shadow mb-4 d-flex flex-column align-items-center">
                                 <div class="card-header py-3 d-flex flex-row align-items-center col">
-                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme circulaire</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme en ligne, progression du talent en fonction du temps</h6>
                                 </div>
                                 <div id="chart_div"></div>
                             </div>

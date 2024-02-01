@@ -29,10 +29,11 @@ btn.addEventListener('click', (e) => {
 document.querySelector('.log').style.backgroundColor = '#9969ff'
 
 function signIn(credentials) {
-  const basicAuth = btoa(`${credentials.username}:${credentials.password}`);
+  const utf8Bytes = new TextEncoder().encode(`${credentials.username}:${credentials.password}`);
+  const basicAuth = btoa(String.fromCharCode.apply(null, utf8Bytes));
   fetch(signinEndpoint, {
     method: 'POST',
-    headers: {
+    headers: {  
       'Content-Type': 'application/json',
       'Authorization': `Basic ${basicAuth}`,
       //'Authorization': `Basic ${basicAuth}`,
@@ -42,7 +43,7 @@ function signIn(credentials) {
     .then(response => {
       if (!response.ok) {
         document.getElementById('messageErr').style.display = 'block'
-        console.log( document.getElementById('messageErr'));
+        console.log(document.getElementById('messageErr'));
         throw new Error(`Signin request failed with status ${response.status}`);
       }
       return response.json();
@@ -52,7 +53,7 @@ function signIn(credentials) {
       getData(data)
     })
     .catch(error => {
-      
+
       console.error('Signin request error:', error);
     });
 }
@@ -140,7 +141,7 @@ function getData(jwt) {
       localStorage.setItem("data", jsonData);
     })
     .catch(graphqlError => {
-      
+
       console.error('GraphQL request error:', graphqlError);
     });
 }
