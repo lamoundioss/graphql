@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 window.addEventListener('beforeunload', function (event) {
+    // Réinsérer les données dans le localStorage si nécessaire
     if (storedData) {
         localStorage.setItem("data", storedData);
     }
@@ -23,7 +24,7 @@ window.addEventListener('beforeunload', function (event) {
 const storedData = localStorage.getItem("data");
 setTimeout(() => {
     localStorage.setItem("data", '');
-}, 1000);
+}, 500);
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
@@ -33,25 +34,31 @@ content.classList.add('container-fluid')
 const data = [20, 40, 60, 80, 147, 75, 50, 25, 90, 30];
 const Data = parsedData.data.xp;
 
-const svgWidth = 800;
-const svgHeight = 600;
+//const svgWidthPercentage = '100%';  // Utilisez le pourcentage que vous préférez
 
-const barPadding = 5;
+const svgWidthPercentage = '100%';
+const svgHeightPercentage = '90%';  // Utilisez le pourcentage que vous préférez
 
 function createDiagrammeBar() {
     console.log('voici mes donnees   ', storedData);
     const svg = content.querySelector('.bar-chart');
-    const barWidth = (svgWidth / data.length) - barPadding;
+    const svgContainer = svg.parentElement;
+    const barPadding = 5;
+    const svgWidth = svgContainer.clientWidth * (parseFloat(svgWidthPercentage) / 100);
+    console.log('svgwidth ', svgWidth);
+    const svgHeight = svgContainer.clientHeight * (parseFloat(svgHeightPercentage) / 100);
+    const barWidth = (svgWidth / (data.length+2)) - barPadding;
+    console.log('length ', data.length+2, barWidth);
     const scaleY = svgHeight / Math.max(...data);
 
     data.forEach((val, index) => {
         var value = Math.round(Data[index].amount / 1000);
-        console.log(Math.round(value));
-
+        
         // Calculer la hauteur de la barre en fonction des données et de la hauteur du SVG
         const barHeight = value * scaleY;
         var name = Data[index].object.name;
-
+        
+        console.log(Math.round(value));
         // Créer un élément rectangle (barre) pour chaque donnée
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', index * (barWidth + barPadding));
@@ -66,17 +73,28 @@ function createDiagrammeBar() {
             var n = 80;
 
         } else {
-            n = -19
+            n = -45
         }
 
         // Ajouter une étiquette pour chaque barre
+
         const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         label.setAttribute('x', index * (barWidth + barPadding) + barWidth / 2);
-        label.setAttribute('y', svgHeight - barHeight + n); // Descendre le texte de 20 pixels
-        label.setAttribute('text-anchor', 'middle'); // Centrer le texte horizontalement
-        label.setAttribute('transform', `rotate(90 ${index * (barWidth + barPadding) + barWidth / 2} ${svgHeight - barHeight + n})`); // Rotation de 90 degrés
-        label.textContent = name; // Utiliser le nom au lieu de la valeur
+        label.setAttribute('y', svgHeight - barHeight + n);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('transform', `rotate(90 ${index * (barWidth + barPadding) + barWidth / 2} ${svgHeight - barHeight + n})`);
+        label.textContent = name;
+        label.style.display = 'none';
         svg.appendChild(label);
+        rect.addEventListener('mouseover', (e) => {
+            e.preventDefault();
+            label.style.display = 'block';
+        });
+
+        rect.addEventListener('mouseout', (e) => {
+            e.preventDefault();
+            label.style.display = 'none';
+        });
     });
 
     // Ajouter des axes
@@ -246,7 +264,6 @@ function formatDate(inputDate) {
     const month = months[date.getMonth()];
     const year = date.getFullYear().toString().slice(-2); // Récupère les deux derniers chiffres de l'année
     const day = date.getDate();
-
     return `${month} ${year}`;
 }
 
@@ -280,7 +297,7 @@ function drawBackgroundColor(data) {
     };
     var SvgElement = document.getElementById('chart_div')
     SvgElement.style.height = '600px'
-    SvgElement.style.width = '600px'
+    SvgElement.style.width = '100%'
     var chart = new google.visualization.LineChart(SvgElement);
     chart.draw(dataTable, options);
 }
