@@ -6,27 +6,28 @@ const graphqlEndpoint = 'https://learn.zone01dakar.sn/api/graphql-engine/v1/grap
 
 var emailValue;
 var passwordValue;
-var data;
-
-btn.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (emailElement && passwordElement) {
-    emailValue = emailElement.value
-    passwordValue = passwordElement.value
-    //window.location.href = "/index.html"
-
-    const credentials = {
-      username: emailValue,
-      password: passwordValue,
-    };
-
-    if (emailValue && passwordValue) {
-      signIn(credentials)
+export var datas;
+if (btn) {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (emailElement && passwordElement) {
+      emailValue = emailElement.value
+      passwordValue = passwordElement.value
+      //window.location.href = "/index.html"
+  
+      const credentials = {
+        username: emailValue,
+        password: passwordValue,
+      };
+  
+      if (emailValue && passwordValue) {
+        signIn(credentials)
+      }
     }
-  }
-})
+  })
+  //document.querySelector('.log').style.backgroundColor = '#9969ff'
+}
 
-document.querySelector('.log').style.backgroundColor = '#9969ff'
 
 function signIn(credentials) {
   const utf8Bytes = new TextEncoder().encode(`${credentials.username}:${credentials.password}`);
@@ -139,6 +140,7 @@ function getData(jwt) {
       console.log('GraphQL response:', graphqlData);
       const jsonData = JSON.stringify(graphqlData);
       localStorage.setItem("data", jsonData);
+      datas = jsonData
     })
     .catch(graphqlError => {
 

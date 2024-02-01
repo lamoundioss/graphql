@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentPath = window.location.pathname;
     if (currentPath === '/index.html') {
         var myData = localStorage.getItem("data");
-        if (!myData) {
+        if (!myData && !storedData) {
             window.location.href = 'login.html';
         }
         console.log('Chargement de la page /index.html');
@@ -14,7 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+window.addEventListener('beforeunload', function (event) {
+    // Réinsérer les données dans le localStorage si nécessaire
+    if (storedData) {
+        localStorage.setItem("data", storedData);
+    }
+});
+
 const storedData = localStorage.getItem("data");
+localStorage.setItem("data", '')
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
@@ -24,15 +32,13 @@ content.classList.add('container-fluid')
 const data = [20, 40, 60, 80, 147, 75, 50, 25, 90, 30];
 const Data = parsedData.data.xp;
 
-// Taille du conteneur SVG
 const svgWidth = 800;
 const svgHeight = 600;
 
-// Espace entre les barres
 const barPadding = 5;
 
-// Créer un élément SVG
 function createDiagrammeBar() {
+    console.log('voici mes donnees   ', storedData);
     const svg = content.querySelector('.bar-chart');
     const barWidth = (svgWidth / data.length) - barPadding;
     const scaleY = svgHeight / Math.max(...data);
@@ -55,10 +61,10 @@ function createDiagrammeBar() {
 
         // Ajouter la barre à l'élément SVG
         svg.appendChild(rect);
-        if (index<=5) {
+        if (index <= 5) {
             var n = 80;
-            
-        }else{
+
+        } else {
             n = -19
         }
 
@@ -245,8 +251,8 @@ function formatDate(inputDate) {
 
 google.charts.load('current', { packages: ['corechart'] });
 google.charts.setOnLoadCallback(() => {
-  // Appelez votre fonction de génération de graphique ici
-  drawBackgroundColor(parsedData.data.progress);
+    // Appelez votre fonction de génération de graphique ici
+    drawBackgroundColor(parsedData.data.progress);
 });
 
 function drawBackgroundColor(data) {
@@ -254,7 +260,7 @@ function drawBackgroundColor(data) {
     var Y = 0
     const formattedData = data.map((entry, index) => [
         formatDate(entry.createdAt),
-        Y+=Math.round(entry.amount)
+        Y += Math.round(entry.amount)
     ]);
     console.log(formattedData);
     var dataTable = new google.visualization.DataTable();
