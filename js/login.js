@@ -14,14 +14,14 @@ if (btn) {
       emailValue = emailElement.value
       passwordValue = passwordElement.value
       //window.location.href = "/index.html"
-  
       const credentials = {
         username: emailValue,
         password: passwordValue,
       };
-  
       if (emailValue && passwordValue) {
         signIn(credentials)
+      }else{
+        document.getElementById('messageErr').style.display = 'block'
       }
     }
   })

@@ -19,10 +19,14 @@ window.addEventListener('beforeunload', function (event) {
     if (storedData) {
         localStorage.setItem("data", storedData);
     }
+
+    // Ajouter un délai (par exemple, 500 ms) pour assurer que les données sont réinsérées avant la fermeture de la page
 });
 
 const storedData = localStorage.getItem("data");
-localStorage.setItem("data", '')
+setTimeout(() => {
+    localStorage.setItem("data", '');
+}, 500);
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
