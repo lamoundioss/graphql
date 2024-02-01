@@ -200,7 +200,7 @@ content.innerHTML = `
                                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                         <h6 class="m-0 font-weight-bold text-primary">Diagramme en bar, nombre de xp par projet</h6>
                                     </div>
-                                    <svg class="bar-chart" width="100%" height="300"></svg>
+                                    <svg class="bar-chart" width="100%" height="600"></svg>
                                 </div>
                             </div>
                             <div class="col-lg-5">
