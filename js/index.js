@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentPath = window.location.pathname;
     if (currentPath === '/index.html') {
         var myData = localStorage.getItem("data");
-        if (!myData && !storedData) {
-            window.location.href = 'login.html';
-        }
+        setTimeout(() => {
+            if (!myData && !storedData) {
+                window.location.href = 'login.html';
+            }
+        }, 100);
         console.log('Chargement de la page /index.html');
     } else if (currentPath === '/login.html') {
         console.log('Chargement de la page /login.html');
@@ -23,7 +25,7 @@ window.addEventListener('beforeunload', function (event) {
 const storedData = localStorage.getItem("data");
 setTimeout(() => {
     localStorage.setItem("data", '');
-}, 300);
+}, 100);
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
