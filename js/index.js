@@ -21,9 +21,9 @@ window.addEventListener('beforeunload', function (event) {
 });
 
 const storedData = localStorage.getItem("data");
-//setTimeout(() => {
+setTimeout(() => {
     localStorage.setItem("data", '');
-//}, 500);
+}, 1000);
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
@@ -97,6 +97,64 @@ function createDiagrammeBar() {
     svg.appendChild(yAxis);
 }
 
+function createDiagrammeCircle(params) {
+    const percentages = [20, 20, 20, 20, 10, 10];
+
+    // Centre du SVG
+    const centerX = 300;
+    const centerY = 300;
+
+    // Rayon du cercle
+    const radius = 150;
+
+    // Tableau de couleurs
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#ffff00', '#00ffff'];
+
+    // Calculer la somme des pourcentages
+    const totalPercentage = percentages.reduce((sum, percentage) => sum + percentage, 0);
+
+    // Création des triangles avec couleurs et étiquettes répartis équitablement autour du cercle
+    let startAngle = 0;
+    for (let i = 0; i < percentages.length; i++) {
+        const angle = (360 / totalPercentage) * percentages[i];
+        const radians = (startAngle * Math.PI) / 180;
+
+        const x1 = centerX + radius * Math.cos(radians);
+        const y1 = centerY + radius * Math.sin(radians);
+
+        const x2 = centerX + radius * Math.cos(radians + angle * Math.PI / 180);
+        const y2 = centerY + radius * Math.sin(radians + angle * Math.PI / 180);
+
+        const x3 = centerX;
+        const y3 = centerY;
+
+        const triangle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        triangle.setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3}`);
+        triangle.setAttribute('fill', colors[i]);
+        triangle.setAttribute('stroke', colors[i]);
+        document.getElementById('circulaire').appendChild(triangle);
+
+        // Ajouter une étiquette pour chaque axe
+        const labelAngle = startAngle + angle / 2;
+        const labelX = centerX + (radius + 20) * Math.cos(labelAngle * Math.PI / 180);
+        const labelY = centerY + (radius + 20) * Math.sin(labelAngle * Math.PI / 180);
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', labelX);
+        label.setAttribute('y', labelY);
+        label.textContent = `Axe ${i + 1} (${percentages[i]}%)`;
+        document.getElementById('circulaire').appendChild(label);
+
+        // Mettre à jour l'angle de départ pour le prochain triangle
+        startAngle += angle;
+    }
+}
+
+var bar = `<svg width="400" height="600">
+            <rect x="50" y="50" width="100" height="500" fill="blue" />
+            <rect x="175" y="75" width="100" height="475" fill="red" />
+            <rect x="300" y="200" width="100" height="350" fill="green" />
+            </svg>`
 
 content.innerHTML = `
                     <!-- Page Heading -->
@@ -132,28 +190,28 @@ content.innerHTML = `
                             </div>
                         </div>
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Diagramme en bar, nombre de xp par projet</h6>
-                                    </div>
-                                    <svg class="bar-chart" width="100%" height="600"></svg>
+                    <div class="col-xl-12 h-300 row">
+                        <div class="col-xl-7 h-100 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme en bar, nombre de xp par projet</h6>
                                 </div>
+                                <svg class="bar-chart" width="800" height="600"></svg>
                             </div>
-                            <div class="col-lg-5">
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3 d-flex flex-row align-items-center">
-                                        <h6 class="m-0 font-weight-bold text-primary">Diagramme en ligne, progression du talent en fonction du temps</h6>
-                                    </div>
-                                    <div id="chart_div" class="p-3"></div>
+                        </div>
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="card shadow mb-4 d-flex flex-column align-items-center">
+                                <div class="card-header py-3 d-flex flex-row align-items-center col">
+                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme en ligne, progression du talent en fonction du temps</h6>
                                 </div>
+                                <div id="chart_div"></div>
                             </div>
                         </div>
                     </div>
                     <!-- Content Row -->
+                    </div>
 `
 
 const container = document.getElementById('content')
@@ -222,7 +280,7 @@ function drawBackgroundColor(data) {
     };
     var SvgElement = document.getElementById('chart_div')
     SvgElement.style.height = '600px'
-    SvgElement.style.width = '100%'
+    SvgElement.style.width = '600px'
     var chart = new google.visualization.LineChart(SvgElement);
     chart.draw(dataTable, options);
 }
