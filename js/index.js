@@ -37,7 +37,7 @@ const Data = parsedData.data.xp;
 //const svgWidthPercentage = '100%';  // Utilisez le pourcentage que vous préférez
 
 const svgWidthPercentage = '100%';
-const svgHeightPercentage = '90%';  // Utilisez le pourcentage que vous préférez
+const svgHeightPercentage = '85%';  // Utilisez le pourcentage que vous préférez
 
 function createDiagrammeBar() {
     console.log('voici mes donnees   ', storedData);
@@ -69,21 +69,18 @@ function createDiagrammeBar() {
 
         // Ajouter la barre à l'élément SVG
         svg.appendChild(rect);
-        if (index <= 5) {
-            var n = 80;
+        if (index < 5) {
+            var n = 90;
 
         } else {
-            n = -45
+            n = -80
         }
-
-        // Ajouter une étiquette pour chaque barre
-
         const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         label.setAttribute('x', index * (barWidth + barPadding) + barWidth / 2);
         label.setAttribute('y', svgHeight - barHeight + n);
         label.setAttribute('text-anchor', 'middle');
         label.setAttribute('transform', `rotate(90 ${index * (barWidth + barPadding) + barWidth / 2} ${svgHeight - barHeight + n})`);
-        label.textContent = name;
+        label.textContent = name+', '+value+'kB';
         label.style.display = 'none';
         svg.appendChild(label);
         rect.addEventListener('mouseover', (e) => {
@@ -115,64 +112,6 @@ function createDiagrammeBar() {
     svg.appendChild(yAxis);
 }
 
-function createDiagrammeCircle(params) {
-    const percentages = [20, 20, 20, 20, 10, 10];
-
-    // Centre du SVG
-    const centerX = 300;
-    const centerY = 300;
-
-    // Rayon du cercle
-    const radius = 150;
-
-    // Tableau de couleurs
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#ffff00', '#00ffff'];
-
-    // Calculer la somme des pourcentages
-    const totalPercentage = percentages.reduce((sum, percentage) => sum + percentage, 0);
-
-    // Création des triangles avec couleurs et étiquettes répartis équitablement autour du cercle
-    let startAngle = 0;
-    for (let i = 0; i < percentages.length; i++) {
-        const angle = (360 / totalPercentage) * percentages[i];
-        const radians = (startAngle * Math.PI) / 180;
-
-        const x1 = centerX + radius * Math.cos(radians);
-        const y1 = centerY + radius * Math.sin(radians);
-
-        const x2 = centerX + radius * Math.cos(radians + angle * Math.PI / 180);
-        const y2 = centerY + radius * Math.sin(radians + angle * Math.PI / 180);
-
-        const x3 = centerX;
-        const y3 = centerY;
-
-        const triangle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        triangle.setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3}`);
-        triangle.setAttribute('fill', colors[i]);
-        triangle.setAttribute('stroke', colors[i]);
-        document.getElementById('circulaire').appendChild(triangle);
-
-        // Ajouter une étiquette pour chaque axe
-        const labelAngle = startAngle + angle / 2;
-        const labelX = centerX + (radius + 20) * Math.cos(labelAngle * Math.PI / 180);
-        const labelY = centerY + (radius + 20) * Math.sin(labelAngle * Math.PI / 180);
-
-        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        label.setAttribute('x', labelX);
-        label.setAttribute('y', labelY);
-        label.textContent = `Axe ${i + 1} (${percentages[i]}%)`;
-        document.getElementById('circulaire').appendChild(label);
-
-        // Mettre à jour l'angle de départ pour le prochain triangle
-        startAngle += angle;
-    }
-}
-
-var bar = `<svg width="400" height="600">
-            <rect x="50" y="50" width="100" height="500" fill="blue" />
-            <rect x="175" y="75" width="100" height="475" fill="red" />
-            <rect x="300" y="200" width="100" height="350" fill="green" />
-            </svg>`
 
 content.innerHTML = `
                     <!-- Page Heading -->
