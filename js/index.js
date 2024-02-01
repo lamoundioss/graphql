@@ -192,26 +192,28 @@ content.innerHTML = `
                             </div>
                         </div>
                         <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-12 h-300 row">
-                        <div class="col-xl-7 h-100 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme en bar, nombre de xp par projet</h6>
+                        <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Diagramme en bar, nombre de xp par projet</h6>
+                                    </div>
+                                    <svg class="bar-chart" width="100%" height="300"></svg>
                                 </div>
-                                <svg class="bar-chart" width="800" height="600"></svg>
                             </div>
-                        </div>
-                        <div class="col-xl-5 col-lg-5">
-                            <div class="card shadow mb-4 d-flex flex-column align-items-center">
-                                <div class="card-header py-3 d-flex flex-row align-items-center col">
-                                    <h6 class="m-0 font-weight-bold text-primary">Diagramme en ligne, progression du talent en fonction du temps</h6>
+                            <div class="col-lg-5">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center">
+                                        <h6 class="m-0 font-weight-bold text-primary">Diagramme en ligne, progression du talent en fonction du temps</h6>
+                                    </div>
+                                    <div id="chart_div" class="p-3"></div>
                                 </div>
-                                <div id="chart_div"></div>
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Content Row -->
                     </div>
 `
@@ -282,7 +284,7 @@ function drawBackgroundColor(data) {
     };
     var SvgElement = document.getElementById('chart_div')
     SvgElement.style.height = '600px'
-    SvgElement.style.width = '600px'
+    SvgElement.style.width = '100%'
     var chart = new google.visualization.LineChart(SvgElement);
     chart.draw(dataTable, options);
 }
