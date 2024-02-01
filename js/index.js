@@ -25,7 +25,7 @@ window.addEventListener('beforeunload', function (event) {
 const storedData = localStorage.getItem("data");
 setTimeout(() => {
     localStorage.setItem("data", '');
-}, 100);
+}, 500);
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
