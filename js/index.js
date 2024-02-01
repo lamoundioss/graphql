@@ -3,11 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentPath = window.location.pathname;
     if (currentPath === '/index.html') {
         var myData = localStorage.getItem("data");
-        setTimeout(() => {
-            if (!myData && !storedData) {
-                window.location.href = 'login.html';
-            }
-        }, 100);
+        if (!myData && !storedData) {
+            window.location.href = 'login.html';
+        }
         console.log('Chargement de la page /index.html');
     } else if (currentPath === '/login.html') {
         console.log('Chargement de la page /login.html');
