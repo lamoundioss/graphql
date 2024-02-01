@@ -15,18 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 window.addEventListener('beforeunload', function (event) {
-    // Réinsérer les données dans le localStorage si nécessaire
     if (storedData) {
         localStorage.setItem("data", storedData);
     }
-
-    // Ajouter un délai (par exemple, 500 ms) pour assurer que les données sont réinsérées avant la fermeture de la page
 });
 
 const storedData = localStorage.getItem("data");
 setTimeout(() => {
     localStorage.setItem("data", '');
-}, 500);
+}, 300);
 
 const parsedData = JSON.parse(storedData);
 var nbrXp = Math.round(parsedData.data.kb.aggregate.sum.amount / 1000)
